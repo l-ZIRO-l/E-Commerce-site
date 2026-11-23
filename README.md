@@ -12,7 +12,7 @@ Think of it like a small shop with a website:
 
 - **Storefront** — the pages customers see: home page, product list, product details, cart, checkout.
 - **Backend** — invisible code that checks prices, saves orders, and talks to the payment company (Razorpay).
-- **Database** — a file (`store/prisma/dev.db`) that remembers products, users, and orders. We use **SQLite**: a real database that lives in a single file, so nothing extra needs to be installed.
+- **Database** — a cloud **PostgreSQL** database (hosted free on Neon) that remembers products, users, and orders. The same database serves local dev and the live Vercel site.
 
 ### The customer journey (what we built so far)
 
@@ -32,7 +32,7 @@ Every step after "Add to cart" works end to end, including a **fake payment mode
 | Framework | **Next.js 16** (React) | One codebase for pages + API. Very popular, easy to deploy free. |
 | Language | **TypeScript** | Catches bugs before the site runs. |
 | Styling | **Tailwind CSS** | Styles written as small classes directly in the code. |
-| Database | **SQLite + Prisma** | Prisma is a tool that lets us describe tables in `prisma/schema.prisma` and gives us ready-made functions to read/write data. |
+| Database | **PostgreSQL (Neon) + Prisma** | Prisma is a tool that lets us describe tables in `prisma/schema.prisma` and gives us ready-made functions to read/write data. Neon hosts Postgres free and works on Vercel. |
 | Auth | Custom (built ourselves) | Passwords hashed with `scrypt`, login kept in a signed cookie. No external service needed. |
 | Payments | **Razorpay** | Indian payment company — UPI, cards, netbanking. |
 | Images | **Picsum.photos** | Free placeholder photos, no API key needed. |
@@ -64,7 +64,7 @@ E Commerce Site/
     ├── prisma/
     │   ├── schema.prisma ← THE database blueprint (all tables)
     │   ├── seed.ts       ← Script that fills the DB with 10 sample products
-    │   ├── dev.db        ← The actual SQLite database file
+    │   ├── dev.db        ← (removed — we now use cloud Postgres)
     │   └── migrations/   ← History of DB changes
     ├── .env              ← YOUR secrets (gitignored — never commit this)
     ├── .env.example      ← Template showing which keys are needed
@@ -92,7 +92,7 @@ cd "D:\PROJECTS\E Commerce Site\store"
 npm install
 
 # 3. Set up the database (only needed once)
-npx prisma migrate dev     # creates dev.db from schema.prisma
+npx prisma migrate dev     # creates tables in the Neon database from schema.prisma
 npm run db:seed            # adds 10 sample products + 4 categories
 
 # 4. Start the dev server
@@ -209,7 +209,7 @@ git push
 | Page shows "could not calculate totals" | Restart `npm run dev` after editing `.env`. |
 | Database looks empty | Run `npm run db:seed`. |
 | Pay button says "payments not configured" | Expected without Razorpay keys — or set `DEV_FAKE_PAY=1`. |
-| Prisma errors | Run `npx prisma migrate dev` to sync `dev.db` with `schema.prisma`. |
+| Prisma errors | Run `npx prisma migrate dev` to sync the Neon database with `schema.prisma`. |
 
 ---
 

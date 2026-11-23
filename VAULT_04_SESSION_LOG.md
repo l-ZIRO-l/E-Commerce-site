@@ -33,6 +33,13 @@ Template:
 **Open questions:** Razorpay test keys needed for real purchase test; webhook still TODO; returns policy/contact TBD in VAULT_00
 **Next session starts with:** add Razorpay test keys → full purchase test → M5 admin.
 
+### Session 2 addendum — Vercel deploy fix
+- **Problem:** deployed site 500'd — SQLite `dev.db` can't persist on Vercel's read-only serverless filesystem
+- **Fix:** switched to Neon Postgres (user provided connection string). `schema.prisma` provider → postgresql + `binaryTargets` incl. rhel-openssl-3.0.x; fresh `init` migration applied; reseeded 10 products; dev.db + old sqlite migration deleted
+- **Gotcha:** pooler URL with `channel_binding=require` fails Prisma auth (P1000) — using pooler URL with plain `sslmode=require` works for both migrations and runtime
+- **Verified:** all pages 200 locally against Neon
+- **Remaining for live site:** set `DATABASE_URL` + `AUTH_SECRET` in Vercel project env vars, redeploy
+
 ## [2026-11-23] Session 1
 **Goal:** Build M0–M2 (setup, catalog, cart).
 **Done:**

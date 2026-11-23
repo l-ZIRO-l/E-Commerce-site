@@ -54,8 +54,8 @@
 - [ ] Error pages (404/500), loading states
 
 ## M7: Launch
-- [ ] Switch to PostgreSQL, run migrations
-- [ ] Deploy to Vercel, set env vars
+- [x] Switch to PostgreSQL, run migrations (Neon Postgres, fresh `init` migration applied + seeded)
+- [~] Deploy to Vercel, set env vars (deployed; needs DATABASE_URL + AUTH_SECRET env vars in Vercel dashboard)
 - [ ] Razorpay live keys + webhook URL
 - [ ] Custom domain + HTTPS
 - [ ] Test purchase with real small payment

@@ -41,6 +41,10 @@ Format: `[YYYY-MM-DD] DECISION: ... | WHY: ... | ALTERNATIVES: ... | STATUS: act
 
 [2026-11-23] DECISION: Guest checkout allowed; orders link to user account by userId when logged in, else by email | WHY: matches "guest checkout allowed" decision; account page shows orders matching either | STATUS: active
 
+[2026-11-23] DECISION: Database switched SQLite → PostgreSQL on Neon (same DB for dev + prod) | WHY: Vercel serverless has read-only filesystem; SQLite file cannot persist. Neon free tier + pooler URL. Migrations re-run fresh; dev.db deleted | ALTERNATIVES: Turso, Supabase | STATUS: active
+
+[2026-11-23] DECISION: Use Neon POOLED connection string for DATABASE_URL (no channel_binding param) | WHY: channel_binding=require broke Prisma auth; plain sslmode=require pooler URL verified working | STATUS: active
+
 ---
 
 ## Open questions (resolve and move up when decided)
